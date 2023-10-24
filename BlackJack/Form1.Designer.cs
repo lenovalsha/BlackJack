@@ -33,6 +33,7 @@
             this.btnStay = new System.Windows.Forms.Button();
             this.lblTotal = new System.Windows.Forms.Label();
             this.lblHouseTotal = new System.Windows.Forms.Label();
+            this.listBox1 = new System.Windows.Forms.ListBox();
             this.SuspendLayout();
             // 
             // btnPlay
@@ -88,11 +89,20 @@
             this.lblHouseTotal.Text = "Total";
             this.lblHouseTotal.Click += new System.EventHandler(this.lblHouseTotal_Click);
             // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.Location = new System.Drawing.Point(12, 12);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(288, 550);
+            this.listBox1.TabIndex = 9;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(970, 603);
+            this.Controls.Add(this.listBox1);
             this.Controls.Add(this.lblHouseTotal);
             this.Controls.Add(this.lblTotal);
             this.Controls.Add(this.btnStay);
@@ -100,6 +110,7 @@
             this.Controls.Add(this.btnPlay);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -111,6 +122,7 @@
         private System.Windows.Forms.Button btnStay;
         private System.Windows.Forms.Label lblTotal;
         private System.Windows.Forms.Label lblHouseTotal;
+        private System.Windows.Forms.ListBox listBox1;
     }
 }
 

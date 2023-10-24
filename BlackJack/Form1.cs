@@ -20,33 +20,49 @@ namespace BlackJack
         int hit;
         List<Label> labels = new List<Label>();
 
+        //Card myCard = new Card(Suit.Hearts, Rank.jack);
+        int start = 0;
+        
         public Form1()
         {
             InitializeComponent();
             btnStay.Enabled = false;
             btnHit.Enabled = false;
+        Deck thisDeck = new Deck();
+     
         }
 
         public void btnPlay_Click(object sender, EventArgs e)
         {
-             Play();
-             btnPlay.Enabled = false;
-            int house1 = rnd.Next(1, 11);
+            //if(start == 0)
+            //{
+            //    //thisDeck.();
+            //    thisDeck.Shuffle();
+            //    start++;
+            //}
 
-            //get random number for our player
-            int num1 = rnd.Next(1,11);
-            int num2 = rnd.Next(1,11);
-            //display the random numbers
-            CreateLabel(100, 100, house1,false); //house's first number
+            // Play();
+            // btnPlay.Enabled = false;
+            //int house1 = rnd.Next(1, 11);
 
-            CreateLabel(100, 200, num1,false);
-            CreateLabel(150, 200, num2,false);        
-            playerTotal = num1 + num2;
-            HouseTotal = house1;
-            lblHouseTotal.Text = HouseTotal.ToString();
+            ////get random number for our player
+            //int num1 = rnd.Next(1,11);
+            //int num2 = rnd.Next(1,11);
+            ////display the random numbers
+            //CreateLabel(100, 100, house1,false); //house's first number
 
-            //if the player number is not 21 then give the choice of hit or stay
-            GetPlayerTotal(playerTotal);
+            //CreateLabel(100, 200, num1,false);
+            //CreateLabel(150, 200, num2,false);        
+            //playerTotal = num1 + num2;
+            //HouseTotal = house1;
+            //lblHouseTotal.Text = HouseTotal.ToString();
+
+            ////if the player number is not 21 then give the choice of hit or stay
+            //GetPlayerTotal(playerTotal);
+
+            MessageBox.Show(thisDeck.Draw().ToString()) ;
+            thisDeck.GenerateToLB(listBox1);
+
 
         }
 
@@ -114,7 +130,6 @@ namespace BlackJack
         private void btnStay_Click(object sender, EventArgs e)
         {
             Stay();
-            
         }
         private void Stay()
         {
@@ -146,8 +161,6 @@ namespace BlackJack
             btnPlay.Enabled = true;
            ClearPanel();
             hit = 0;
-
-            
         }
         private void ClearPanel()
         {
@@ -162,6 +175,11 @@ namespace BlackJack
         }
 
         private void lblHouseTotal_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void Form1_Load(object sender, EventArgs e)
         {
 
         }
