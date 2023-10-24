@@ -10,7 +10,7 @@ namespace BlackJack
     public class Deck
     {
         // Property to hold the list of cards
-        public List<Card> Cards { get; private set; }
+        public List<Card> Cards { get; set; }
 
         // Constructor to initialize the deck
         public Deck()
@@ -55,7 +55,6 @@ namespace BlackJack
             while (n > 1)
             {
                 n--;
-
                 // Generate a random index between 0 and n
                 int k = rnd.Next(n + 1);
 
@@ -84,15 +83,14 @@ namespace BlackJack
                 throw new InvalidOperationException("The deck is empty.");
             }
         }
-        public void GenerateToLB(ListBox lstBox)
+        public ListBox Generate() //check if we have all of the cards
         {
-                lstBox.Items.Clear();
-            foreach(Card card in Cards)
-            {
-                lstBox.Items.Add(card);
+            ListBox lst = new ListBox();    
 
+            foreach(Card card in Cards) {
+            lst.Items.Add(card);
             }
-
+            return lst;
         }
     }
 }

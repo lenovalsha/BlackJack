@@ -24,7 +24,7 @@ namespace BlackJack
 
         public Card(Suit suit, Rank rank) {
             this.Suit = suit;
-            this.Rank = Rank;
+            this.Rank = rank;
         }
         public override string ToString()
         {

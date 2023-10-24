@@ -19,6 +19,7 @@ namespace BlackJack
         int num;
         int hit;
         List<Label> labels = new List<Label>();
+        Deck thisDeck = new Deck();
 
         //Card myCard = new Card(Suit.Hearts, Rank.jack);
         int start = 0;
@@ -28,7 +29,6 @@ namespace BlackJack
             InitializeComponent();
             btnStay.Enabled = false;
             btnHit.Enabled = false;
-        Deck thisDeck = new Deck();
      
         }
 
@@ -61,7 +61,8 @@ namespace BlackJack
             //GetPlayerTotal(playerTotal);
 
             MessageBox.Show(thisDeck.Draw().ToString()) ;
-            thisDeck.GenerateToLB(listBox1);
+            //thisDeck.GenerateToLB(listBox1);
+            listBox1.Items.AddRange(thisDeck.Generate().Items);
 
 
         }
