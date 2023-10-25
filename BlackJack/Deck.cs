@@ -12,14 +12,15 @@ namespace BlackJack
         // Property to hold the list of cards
         public List<Card> Cards { get; set; }
 
+
         // Constructor to initialize the deck
         public Deck()
         {
             // Generate a new deck of cards when a Deck object is created
-            Cards = GenerateDeck();
-            Shuffle();
-        }
 
+                Cards = GenerateDeck();
+                Shuffle();
+        }
         // Private method to generate a deck of cards
         private List<Card> GenerateDeck()
         {
@@ -34,10 +35,8 @@ namespace BlackJack
                 {
                     // Add a new card with the current suit and rank to the deck
                     deck.Add(new Card(suit, rank));
-                    //MessageBox.Show(suit + " : " + rank); 
                 }
             }
-
             // Return the generated deck
             return deck;
         }
@@ -45,10 +44,7 @@ namespace BlackJack
         // Method to shuffle the deck
         public void Shuffle()
         {
-            // Create a new random number generator
             Random rnd = new Random();
-
-            // Get the number of cards in the deck
             int n = Cards.Count;
 
             // While there are still cards to shuffle
@@ -72,7 +68,6 @@ namespace BlackJack
             if (Cards.Count > 0)
             {
                 // Remove and return the first card in the list
-                //MessageBox.Show(Cards.Count.ToString());
                 Card drawnCard = Cards[0];
                 Cards.RemoveAt(0);
                 return drawnCard;
@@ -85,8 +80,7 @@ namespace BlackJack
         }
         public ListBox Generate() //check if we have all of the cards
         {
-            ListBox lst = new ListBox();    
-
+            ListBox lst = new ListBox(); 
             foreach(Card card in Cards) {
             lst.Items.Add(card);
             }

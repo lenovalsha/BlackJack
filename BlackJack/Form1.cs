@@ -19,27 +19,42 @@ namespace BlackJack
         int num;
         int hit;
         List<Label> labels = new List<Label>();
-        Deck thisDeck = new Deck();
+        Deck ThisDeck;
+        List<Card> CombinedDeck = new List<Card>();
+        List<Deck> Decks = new List<Deck>();
 
-        //Card myCard = new Card(Suit.Hearts, Rank.jack);
-        int start = 0;
         
         public Form1()
         {
             InitializeComponent();
             btnStay.Enabled = false;
             btnHit.Enabled = false;
-     
+            for (int i = 0; i < 4; i++) //make 4 decks
+            {
+                ThisDeck = new Deck();
+                Decks.Add(ThisDeck);
+
+                CombinedDeck.AddRange(ThisDeck.Cards);
+            }
+            //we need to get every card in this four deck
+            listBox1.Items.AddRange(CombinedDeck.ToArray());
+        }
+        public Card DrawFromCombinedDeck()
+        {
+            if(CombinedDeck.Count > 0)
+            {
+                Card drawnCard = CombinedDeck[0];
+                CombinedDeck.RemoveAt(0);
+                return drawnCard;
+            }
+            else
+            {
+                throw new Exception("No more cards left");
+            }
         }
 
         public void btnPlay_Click(object sender, EventArgs e)
         {
-            //if(start == 0)
-            //{
-            //    //thisDeck.();
-            //    thisDeck.Shuffle();
-            //    start++;
-            //}
 
             // Play();
             // btnPlay.Enabled = false;
@@ -60,9 +75,9 @@ namespace BlackJack
             ////if the player number is not 21 then give the choice of hit or stay
             //GetPlayerTotal(playerTotal);
 
-            MessageBox.Show(thisDeck.Draw().ToString()) ;
-            //thisDeck.GenerateToLB(listBox1);
-            listBox1.Items.AddRange(thisDeck.Generate().Items);
+            MessageBox.Show(DrawFromCombinedDeck().ToString());
+            listBox1.Items.Clear();
+            listBox1.Items.AddRange(CombinedDeck.ToArray() );
 
 
         }
@@ -108,6 +123,10 @@ namespace BlackJack
                 btnHit.Enabled = true;
                 btnStay.Enabled = true;
             }
+        }
+        private void ShuffleDecks()
+        {
+
         }
 
         private void CreateLabel(int x, int y, int value, bool type)
