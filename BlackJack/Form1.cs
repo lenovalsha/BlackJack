@@ -24,8 +24,8 @@ namespace BlackJack
         //List<Deck> Decks = new List<Deck>();
         CombinedDeck CombinedDecks;
         List<Card> cards = new List<Card>();
+      
 
-        
         public Form1()
         {
             InitializeComponent();
@@ -58,10 +58,33 @@ namespace BlackJack
             ////if the player number is not 21 then give the choice of hit or stay
             //GetPlayerTotal(playerTotal);
 
-            MessageBox.Show(CombinedDecks.DrawFromCombinedDeck().ToString());
-            //cards.AddRange(CombinedDecks.CombinedDecks.ToArray());
-            listBox1.Items.AddRange(CombinedDecks.CombinedDecks.ToArray());
+            //MessageBox.Show(CombinedDecks.DrawFromCombinedDeck().ToString()); 
 
+
+            string [] cards;
+            int a, b, c;
+
+            //a = cards[1]; //player
+            //b = cards[2]; //house
+            //c = cards[3]; //player 
+            //MessageBox.Show("a: " + a + " b: " + b + " c: "+ c) ; //test
+
+            ////lets show them on the label instead
+            //CreateLabel(100, 100, int.Parse(b), false); //house's first number
+
+            //CreateLabel(100, 100, int.Parse(a), false); //players's first number
+
+            //CreateLabel(100, 100, int.Parse(c), false); //players's second number
+
+
+            ////cards.AddRange(CombinedDecks.CombinedDecks.ToArray());
+            //listBox1.Items.AddRange(CombinedDecks.Cards.ToArray());
+           
+                cards = CombinedDecks.Play().ToString().Split(':'); //place them in an array split by : => without array ":four:ace:queen"There is technically a character in the [0] position so whe start at [1] => will clean this up later
+                a = Int32.Parse("four"); //player
+                b = Int32.Parse(cards[2]); //house
+                c = Int32.Parse(cards[3]); //player 
+           
 
         }
 
