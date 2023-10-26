@@ -22,8 +22,8 @@ namespace BlackJack
                 Decks.Add(ThisDeck);
                 Cards.AddRange(ThisDeck.Cards);
             }
-            //we need to get every card in this four deck
-            //listBox1.Items.AddRange(CombinedDecks.ToArray());
+            //Shuffle();//shuffle again
+            
         }
         public Card DrawFromCombinedDeck()
         {
@@ -38,20 +38,34 @@ namespace BlackJack
                 throw new Exception("No more cards left");
             }
         }
+        public void Shuffle()
+        {
+            Random rnd = new Random();
+            int n = Cards.Count;
+
+            // While there are still cards to shuffle
+            while (n > 1)
+            {
+                n--;
+                // Generate a random index between 0 and n
+                int k = rnd.Next(n + 1);
+
+                // Swap the card at index k with the card at index n
+                Card value = Cards[k];
+                Cards[k] = Cards[n];
+                Cards[n] = value;
+            }
+        }
         public string Play()
         {
             //get the first of the card
             string firstCards;
-            List <string> cards = new List<string>();
-            if(Cards.Count > 0)
+            if (Cards.Count > 0)
             {
-                    firstCards="";
-                //DrawFromCombinedDeck();
-                for(int i = 0;i<3;i++)
+                firstCards = "";
+                for (int i = 0; i < 3; i++)
                 {
-                    string [] drawnCard = DrawFromCombinedDeck().ToString().Split(':');
-                    //firstCards = drawnCard[0];
-                    //cards.Add(firstCards);
+                    string[] drawnCard = DrawFromCombinedDeck().ToString().Split(':');
                     firstCards = firstCards + ":" + drawnCard[0];
                 }
                 return firstCards;
@@ -61,6 +75,22 @@ namespace BlackJack
                 throw new Exception("No more cards left");
             }
         }
+        public int Hit()
+        {
+            string[] cardDrawn;
+
+            if (Cards.Count > 0)
+            {
+                cardDrawn = DrawFromCombinedDeck().ToString().Split(':');
+                return (int)Enum.Parse(typeof(Rank), cardDrawn[0]); //return the int version of our enum
+            }
+            else
+            {
+                throw new Exception("No more cards left");
+
+            }
+        }
+
 
     }
 }

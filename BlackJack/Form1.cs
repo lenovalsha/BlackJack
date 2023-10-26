@@ -24,7 +24,7 @@ namespace BlackJack
         //List<Deck> Decks = new List<Deck>();
         CombinedDeck CombinedDecks;
         List<Card> cards = new List<Card>();
-      
+
 
         public Form1()
         {
@@ -39,81 +39,58 @@ namespace BlackJack
         {
 
             listBox1.Items.Clear();
-            // Play();
-            // btnPlay.Enabled = false;
-            //int house1 = rnd.Next(1, 11);
+            
+            Play();
+           
 
-            ////get random number for our player
-            //int num1 = rnd.Next(1,11);
-            //int num2 = rnd.Next(1,11);
-            ////display the random numbers
-            //CreateLabel(100, 100, house1,false); //house's first number
-
-            //CreateLabel(100, 200, num1,false);
-            //CreateLabel(150, 200, num2,false);        
-            //playerTotal = num1 + num2;
-            //HouseTotal = house1;
-            //lblHouseTotal.Text = HouseTotal.ToString();
-
-            ////if the player number is not 21 then give the choice of hit or stay
-            //GetPlayerTotal(playerTotal);
-
-            //MessageBox.Show(CombinedDecks.DrawFromCombinedDeck().ToString()); 
-
-
-            string [] cards;
+            string[] cards;
             int a, b, c;
 
-            //a = cards[1]; //player
-            //b = cards[2]; //house
-            //c = cards[3]; //player 
-            //MessageBox.Show("a: " + a + " b: " + b + " c: "+ c) ; //test
+            listBox1.Items.AddRange(CombinedDecks.Cards.ToArray());
 
-            ////lets show them on the label instead
-            //CreateLabel(100, 100, int.Parse(b), false); //house's first number
+            cards = CombinedDecks.Play().ToString().Split(':'); //place them in an array split by : => without array ":four:ace:queen"There is technically a character in the [0] position so whe start at [1] => will clean this up later
+            a = (int)Enum.Parse(typeof(Rank), cards[1]); //player
 
-            //CreateLabel(100, 100, int.Parse(a), false); //players's first number
+            // You can directly use Enum values for the other cards
+            b = (int)Enum.Parse(typeof(Rank), cards[2]); //house
+            c = (int)Enum.Parse(typeof(Rank), cards[3]); //player
 
-            //CreateLabel(100, 100, int.Parse(c), false); //players's second number
+           if(a>10) 
+                a = 10;
+           if(b>10)
+                b = 10;
+           if(c>10)
+                c = 10;
 
+            CreateLabel(100, 100, b, false); //house's first number
 
-            ////cards.AddRange(CombinedDecks.CombinedDecks.ToArray());
-            //listBox1.Items.AddRange(CombinedDecks.Cards.ToArray());
-           
-                cards = CombinedDecks.Play().ToString().Split(':'); //place them in an array split by : => without array ":four:ace:queen"There is technically a character in the [0] position so whe start at [1] => will clean this up later
-                a = Int32.Parse("four"); //player
-                b = Int32.Parse(cards[2]); //house
-                c = Int32.Parse(cards[3]); //player 
-           
+            CreateLabel(100, 200, a, false); //players's first number
+            CreateLabel(150, 200, c, false); //players's second number
+
+            HouseTotal = b;
+            lblHouseTotal.Text = b.ToString();
+            playerTotal = a + c;
+            GetPlayerTotal(playerTotal);
 
         }
 
         private void btnHit_Click(object sender, EventArgs e)
         {
             hit++;
-            num = rnd.Next(1, 11); //this is only getting hit once
-
-            for (int i = 0; i < 1; i++)
-            {
-                
-
-                    num = rnd.Next(1, 11);
-                    CreateLabel(150 + (hit * 50), 200, num, false);
-                    playerTotal += num;
-                    lblTotal.Text = playerTotal.ToString();
-                GetPlayerTotal(playerTotal);
-                
-            }
-
+            int hitCard = CombinedDecks.Hit();
+            CreateLabel(150 + (hit * 50), 200, hitCard, false);
+            playerTotal+= hitCard;
+            lblTotal.Text = playerTotal.ToString();
+            GetPlayerTotal(playerTotal);
         }
         private void GetPlayerTotal(int total)
         {
             lblTotal.Text = total.ToString();
-           if(total >= 21)
+            if (total >= 21)
             {
                 btnHit.Enabled = false;
                 btnStay.Enabled = false;
-                if(total == 21)
+                if (total == 21)
                 {
                     Stay();
                 }
@@ -124,30 +101,26 @@ namespace BlackJack
                     ClearPanel();
                 }
             }
-           else
+            else
             {
                 btnHit.Enabled = true;
                 btnStay.Enabled = true;
             }
         }
-        private void ShuffleDecks()
-        {
-
-        }
-
         private void CreateLabel(int x, int y, int value, bool type)
         {
-            Point point = new Point (x,y);
+            Point point = new Point(x, y);
             Font font = new Font("Consolas", 10);
             Label newLabel = new Label();
-            currentPlayerLocationIndex = type == false? 0 : currentPlayerLocationIndex;
+            currentPlayerLocationIndex = type == false ? 0 : currentPlayerLocationIndex;
             newLabel.Text = value.ToString();
             newLabel.Font = font;
             newLabel.Location = point; // Change the index to 0 to use the first set of points
             newLabel.AutoSize = true;
             this.Controls.Add(newLabel);
             labels.Add(newLabel);
-            if(type == true) {
+            if (type == true)
+            {
 
                 currentPlayerLocationIndex++;
             }
@@ -159,24 +132,24 @@ namespace BlackJack
         }
         private void Stay()
         {
-            num = rnd.Next(1, 11); //this is only getting hit once
+            //num = rnd.Next(1, 11); //this is only getting hit once
 
             for (int i = 0; i < 7; i++)
             {
                 if (HouseTotal < 17)
                 {
-                    num = rnd.Next(1, 11);
+                    num = CombinedDecks.Hit();
                     CreateLabel(150 + (i * 50), 100, num, false);
                     HouseTotal += num;
                     lblHouseTotal.Text = HouseTotal.ToString();
                 }
             }
 
-            if(HouseTotal > playerTotal && HouseTotal <=21)
+            if (HouseTotal > playerTotal && HouseTotal <= 21)
             {
                 MessageBox.Show("house wins");
             }
-            else 
+            else
             {
                 MessageBox.Show("Player wins");
             }
@@ -185,14 +158,14 @@ namespace BlackJack
         private void Play()
         {
             btnPlay.Enabled = true;
-           ClearPanel();
+            ClearPanel();
             hit = 0;
         }
         private void ClearPanel()
         {
-            foreach(Control control in labels)
+            foreach (Control control in labels)
             {
-                if(control is Label)
+                if (control is Label)
                 {
                     this.Controls.Remove(control);
                     control.Dispose();
