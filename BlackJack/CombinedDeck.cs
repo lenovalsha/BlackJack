@@ -78,11 +78,17 @@ namespace BlackJack
         public int Hit()
         {
             string[] cardDrawn;
+            int card; 
 
             if (Cards.Count > 0)
             {
                 cardDrawn = DrawFromCombinedDeck().ToString().Split(':');
-                return (int)Enum.Parse(typeof(Rank), cardDrawn[0]); //return the int version of our enum
+                card = (int)Enum.Parse(typeof(Rank), cardDrawn[0]);
+                if (card > 11)
+                {
+                    card = 10;
+                }
+                return card; //return the int version of our enum
             }
             else
             {

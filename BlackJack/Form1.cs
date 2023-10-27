@@ -13,18 +13,23 @@ namespace BlackJack
     public partial class Form1 : Form
     {
         Random rnd = new Random();
-        int playerTotal;
+        string playerTotal;
+        int finalPlayerTotal;
+
         int HouseTotal;
         int currentPlayerLocationIndex = 0;
         int num;
         int hit;
+        bool hadAce; //fix this later
         List<Label> labels = new List<Label>();
         //Deck ThisDeck;
         //List<Card> CombinedDeck = new List<Card>();
         //List<Deck> Decks = new List<Deck>();
         CombinedDeck CombinedDecks;
-        List<Card> cards = new List<Card>();
 
+        List<int> playersCards = new List<int>();
+
+        string[] cards;
 
         public Form1()
         {
@@ -37,13 +42,11 @@ namespace BlackJack
 
         public void btnPlay_Click(object sender, EventArgs e)
         {
-
+            hadAce= false;
             listBox1.Items.Clear();
-            
-            Play();
-           
+            playersCards.Clear();
 
-            string[] cards;
+            Play();
             int a, b, c;
 
             listBox1.Items.AddRange(CombinedDecks.Cards.ToArray());
@@ -55,23 +58,52 @@ namespace BlackJack
             b = (int)Enum.Parse(typeof(Rank), cards[2]); //house
             c = (int)Enum.Parse(typeof(Rank), cards[3]); //player
 
-           if(a>10) 
+            if (a > 11)
                 a = 10;
-           if(b>10)
+            if (b > 11)
                 b = 10;
-           if(c>10)
+            if (c > 11)
                 c = 10;
 
-            CreateLabel(100, 100, b, false); //house's first number
+            playersCards.Add(a); //add to players card list
+            playersCards.Add(c);
+            finalPlayerTotal = a + c;
+            //if we pull an ace
+            HasAce();
 
+            CreateLabel(100, 100, b, false); //house's first number
             CreateLabel(100, 200, a, false); //players's first number
             CreateLabel(150, 200, c, false); //players's second number
 
             HouseTotal = b;
             lblHouseTotal.Text = b.ToString();
-            playerTotal = a + c;
-            GetPlayerTotal(playerTotal);
 
+        }
+      private void HasAce()
+        {
+
+            if (playersCards.Contains(11))
+            {
+                if (finalPlayerTotal < 21 && !hadAce)
+                {
+                    playerTotal = (finalPlayerTotal - 10).ToString() + "/" + finalPlayerTotal.ToString();
+                    lblTotal.Text = playerTotal.ToString();
+                }
+                else if(finalPlayerTotal > 21)
+                {
+                    hadAce = true;
+                    playersCards.Remove(11);
+                    finalPlayerTotal -= 10;
+                    //lblHouseTotal.Text = finalPlayerTotal.ToString();
+                    GetPlayerTotal(finalPlayerTotal);
+                }
+
+            }
+            else //if not then proceed normally
+            {
+                GetPlayerTotal(finalPlayerTotal);
+
+            }
         }
 
         private void btnHit_Click(object sender, EventArgs e)
@@ -79,9 +111,10 @@ namespace BlackJack
             hit++;
             int hitCard = CombinedDecks.Hit();
             CreateLabel(150 + (hit * 50), 200, hitCard, false);
-            playerTotal+= hitCard;
-            lblTotal.Text = playerTotal.ToString();
-            GetPlayerTotal(playerTotal);
+            finalPlayerTotal+= hitCard;
+            playersCards.Add(hitCard);
+       
+            HasAce();
         }
         private void GetPlayerTotal(int total)
         {
@@ -145,7 +178,7 @@ namespace BlackJack
                 }
             }
 
-            if (HouseTotal > playerTotal && HouseTotal <= 21)
+            if (HouseTotal > finalPlayerTotal && HouseTotal <= 21)
             {
                 MessageBox.Show("house wins");
             }
