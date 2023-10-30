@@ -20,7 +20,9 @@ namespace BlackJack
         int currentPlayerLocationIndex = 0;
         int num;
         int hit;
-        bool hadAce; //fix this later
+        int a, b, c;
+
+        bool hadAce, stayOnAce; //fix this later
         List<Label> labels = new List<Label>();
         //Deck ThisDeck;
         //List<Card> CombinedDeck = new List<Card>();
@@ -47,7 +49,6 @@ namespace BlackJack
             playersCards.Clear();
 
             Play();
-            int a, b, c;
 
             listBox1.Items.AddRange(CombinedDecks.Cards.ToArray());
 
@@ -58,11 +59,11 @@ namespace BlackJack
             b = (int)Enum.Parse(typeof(Rank), cards[2]); //house
             c = (int)Enum.Parse(typeof(Rank), cards[3]); //player
 
-            if (a > 11)
+            if (a > 10)
                 a = 10;
-            if (b > 11)
+            if (b > 10)
                 b = 10;
-            if (c > 11)
+            if (c > 10)
                 c = 10;
 
             playersCards.Add(a); //add to players card list
@@ -82,20 +83,29 @@ namespace BlackJack
       private void HasAce()
         {
 
-            if (playersCards.Contains(11))
+            if (playersCards.Contains(1))
             {
-                if (finalPlayerTotal < 21 && !hadAce)
+                
+                if ((finalPlayerTotal < 11 && !hadAce ) || (a == 1 && c ==1))
                 {
-                    playerTotal = (finalPlayerTotal - 10).ToString() + "/" + finalPlayerTotal.ToString();
+                    playerTotal = (finalPlayerTotal).ToString() + "/" + (finalPlayerTotal + 10).ToString();
                     lblTotal.Text = playerTotal.ToString();
+                    stayOnAce = true;
+                    //hadAce= true;
                 }
-                else if(finalPlayerTotal > 21)
+                else if(finalPlayerTotal > 11)
                 {
+                    stayOnAce= false;
                     hadAce = true;
-                    playersCards.Remove(11);
-                    finalPlayerTotal -= 10;
-                    //lblHouseTotal.Text = finalPlayerTotal.ToString();
+                    playersCards.Remove(1);
+                    lblHouseTotal.Text = finalPlayerTotal.ToString();
                     GetPlayerTotal(finalPlayerTotal);
+                }
+                else if (finalPlayerTotal == 11) //if 21
+                {
+                   GotBlackJack(finalPlayerTotal);
+                    btnHit.Enabled = false;
+                    btnStay.Enabled = false;
                 }
 
             }
@@ -115,6 +125,13 @@ namespace BlackJack
             playersCards.Add(hitCard);
        
             HasAce();
+        }
+        private void GotBlackJack(int num)
+        {
+            lblTotal.Text = num.ToString();
+            MessageBox.Show("BLACK JACK");
+            ClearPanel();
+            btnPlay.Enabled = true;
         }
         private void GetPlayerTotal(int total)
         {
@@ -166,7 +183,10 @@ namespace BlackJack
         private void Stay()
         {
             //num = rnd.Next(1, 11); //this is only getting hit once
-
+            if (stayOnAce)
+            {
+                finalPlayerTotal += 10; // originally the Ace is =1
+            }
             for (int i = 0; i < 7; i++)
             {
                 if (HouseTotal < 17)
@@ -182,15 +202,20 @@ namespace BlackJack
             {
                 MessageBox.Show("house wins");
             }
-            else
+            else if((HouseTotal < finalPlayerTotal && finalPlayerTotal <=21) || HouseTotal > 21)
             {
                 MessageBox.Show("Player wins");
+            }
+            else if(HouseTotal == finalPlayerTotal)
+            {
+                MessageBox.Show("Draw");
             }
             btnPlay.Enabled = true;
         }
         private void Play()
         {
             btnPlay.Enabled = true;
+            hadAce = false;
             ClearPanel();
             hit = 0;
         }
